@@ -13,6 +13,7 @@ It supports real-time camera preview, video recording, and several image editing
 - Video recording using `cv.VideoWriter`
 - Preview mode and record mode
 - Record mode indicator shown as a red circle on the screen
+- The most recently pressed keyboard key is displayed in the upper-right corner
 - Start and stop recording with the `Space` key
 - Exit the program with the `ESC` key
 - Real-time image editing options:
@@ -21,6 +22,7 @@ It supports real-time camera preview, video recording, and several image editing
   - Grayscale conversion
   - Gaussian blur
   - Contrast and brightness adjustment
+  - On-screen contrast and brightness coefficient display
 
 ## Project Structure
 
@@ -28,7 +30,6 @@ It supports real-time camera preview, video recording, and several image editing
 .
 ├── My_Video_Recorder.py
 ├── README.md
-├── result/
 └── scripts/
     ├── run_macbook.sh
     └── run_iphone.sh
@@ -86,7 +87,7 @@ The program supports the following arguments:
 - `f`: toggle flip effect
 - `g`: toggle grayscale effect
 - `b`: toggle Gaussian blur effect
-- `c`: toggle contrast and brightness mode
+- `c`: toggle contrast and brightness mode and show the current coefficients on the screen
 
 ### Contrast and Brightness Adjustment
 
@@ -96,14 +97,6 @@ When contrast and brightness mode is enabled:
 - `-` or `_`: decrease contrast
 - `>` or `.`: increase brightness
 - `<` or `,`: decrease brightness
-
-## Output
-
-Recorded video files are automatically saved in:
-
-```text
-result/
-```
 
 ## Example Workflow
 

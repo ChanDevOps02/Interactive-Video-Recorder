@@ -44,6 +44,11 @@ else:
     contrast_step = 0.1
     brightness = 0
     brightness_step = 5
+    last_key_text = "None"
+
+    def draw_text_with_outline(image, text, org, scale=0.7, color=(255, 255, 255)):
+        cv.putText(image, text, org, cv.FONT_HERSHEY_DUPLEX, scale, (0, 0, 0), thickness=2)
+        cv.putText(image, text, org, cv.FONT_HERSHEY_DUPLEX, scale, color, thickness=1)
 
     while True:
         valid, img = video.read()
@@ -70,30 +75,39 @@ else:
         if Blur == True:
             processed = cv.GaussianBlur(processed, (21,21), 0)
         
-        display = processed.copy()
+        output_frame = processed.copy()
+        display = output_frame.copy()
         if record:
             cv.circle(display, (30,30), 10, (0,0,255), -1)
+            cv.circle(output_frame, (30,30), 10, (0,0,255), -1)
         if contbri:
             info = f"contrast: {contrast:.1f} brightness: {brightness}"
-            cv.putText(display, info, (50, 35), cv.FONT_HERSHEY_DUPLEX, 0.7, (0, 0, 0), thickness=2)
-            cv.putText(display, info, (50, 35), cv.FONT_HERSHEY_DUPLEX, 0.7, (255, 255, 255), thickness=1)
+            draw_text_with_outline(display, info, (50, 35))
+            draw_text_with_outline(output_frame, info, (50, 35))
+        key_info = f"Key: {last_key_text}"
+        text_size, _ = cv.getTextSize(key_info, cv.FONT_HERSHEY_DUPLEX, 0.7, 1)
+        key_org = (display.shape[1] - text_size[0] - 20, 35)
+        draw_text_with_outline(display, key_info, key_org, color=(0, 255, 255))
+        draw_text_with_outline(output_frame, key_info, key_org, color=(0, 255, 255))
         
         cv.imshow("MyCam", display)
       
         fps = video.get(cv.CAP_PROP_FPS)
 
         if record and target.isOpened():
-            target.write(processed)
-        key = cv.waitKey(1)
+            target.write(output_frame)
+        key = cv.waitKey(1) & 0xFF
 
         if key == 27:
+            last_key_text = "ESC"
             print("Program terminated")
             break
         elif key == ord(' '):
+            last_key_text = "SPACE"
             if not record:
                 record = True
                 if not target.isOpened():
-                    VideoOpen(target, args.name, args.format, args.fourcc, fps, processed)
+                    VideoOpen(target, args.name, args.format, args.fourcc, fps, output_frame)
                 print("Recording Started")
             else:
                 record = False
@@ -101,22 +115,31 @@ else:
                     target.release()
                 print("Recording stopped")
         elif (args.contbri == True) and (key == ord('c')):
+            last_key_text = "C"
             contbri = not contbri
         elif (args.flip == True) and (key == ord('f')):
+            last_key_text = "F"
             flip = not flip
         elif (args.negative == True) and (key== ord('n')):
+            last_key_text = "N"
             negative = not negative
         elif (args.Grayscale == True) and (key == ord('g')):
+            last_key_text = "G"
             Grayscale = not Grayscale
         elif (args.Blur == True) and (key == ord('b')):
+            last_key_text = "B"
             Blur = not Blur
         elif (args.contbri == True) and (key == ord('+') or key == ord('=')):
+            last_key_text = "+"
             contrast += contrast_step
         elif (args.contbri == True) and (key == ord('-') or key == ord('_')):
+            last_key_text = "-"
             contrast = max(0.1, contrast - contrast_step)
         elif (args.contbri == True) and (key == ord('>') or key == ord('.')):
+            last_key_text = ">"
             brightness += brightness_step
         elif (args.contbri == True) and (key == ord('<') or key == ord(',')):
+            last_key_text = "<"
             brightness -= brightness_step
 
     video.release()
