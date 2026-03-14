@@ -25,8 +25,9 @@ It supports real-time camera preview, video recording, and several image editing
 ## Project Structure
 
 ```text
-Video Recorder/
+.
 ├── My_Video_Recorder.py
+├── README.md
 ├── result/
 └── scripts/
     ├── run_macbook.sh
@@ -49,13 +50,13 @@ pip install opencv-python
 ### MacBook camera
 
 ```bash
-zsh "Video Recorder/scripts/run_macbook.sh"
+zsh "scripts/run_macbook.sh"
 ```
 
 ### iPhone camera
 
 ```bash
-zsh "Video Recorder/scripts/run_iphone.sh"
+zsh "scripts/run_iphone.sh"
 ```
 
 ## Command-line Arguments
@@ -101,7 +102,7 @@ When contrast and brightness mode is enabled:
 Recorded video files are automatically saved in:
 
 ```text
-Video Recorder/result/
+result/
 ```
 
 ## Example Workflow

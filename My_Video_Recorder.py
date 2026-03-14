@@ -3,7 +3,7 @@ import cv2 as cv
 import argparse
 
 def VideoOpen(target_param, target_name, target_format, fourcc, fps, img):
-    target_file = 'Video Recorder/result/'+target_name + '.'+target_format
+    target_file = 'result/'+target_name + '.'+target_format
     target_fps = fps
     target_fourcc = fourcc
     h,w,*_ = img.shape
@@ -24,7 +24,7 @@ parser.add_argument("--contbri", action="store_true")
 
 args = parser.parse_args()
 
-os.makedirs("Video Recorder/result", exist_ok=True)
+os.makedirs("result", exist_ok=True)
 
 #1 : Iphone 16 pro max
 #2 : Macbook Pro
